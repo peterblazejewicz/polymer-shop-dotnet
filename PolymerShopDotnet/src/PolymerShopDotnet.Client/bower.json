@@ -1,8 +1,8 @@
 {
-  "name": "SHOP",
+  "name": "PolymerShopDotnet",
   "version": "1.0",
   "authors": [
-    "The Polymer Authors"
+    "@peterblazejewicz"
   ],
   "private": true,
   "dependencies": {
