@@ -32,6 +32,7 @@ namespace PolymerShopDotnet.Service
                 {
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
                 });
+            services.AddCors();
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
             {
@@ -50,6 +51,12 @@ namespace PolymerShopDotnet.Service
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
+            app.UseCors(builder => {
+                builder.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowAnyOrigin()
+                    .AllowCredentials();
+            });
             app.UseMvc();
             // if(env.IsDevelopment() == true)
             // {
