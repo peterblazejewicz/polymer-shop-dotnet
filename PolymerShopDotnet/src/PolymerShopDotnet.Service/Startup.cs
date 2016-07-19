@@ -58,11 +58,6 @@ namespace PolymerShopDotnet.Service
                     .AllowCredentials();
             });
             app.UseMvc();
-            // if(env.IsDevelopment() == true)
-            // {
-            //     app.UseSwagger();
-            //     app.UseSwaggerUi();
-            // }
             app.UseSwagger((httpRequest, swaggerDocs) =>
             {
                 swaggerDocs.Host = httpRequest.Host.Value;
