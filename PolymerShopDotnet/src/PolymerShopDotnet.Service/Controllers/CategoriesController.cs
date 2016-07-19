@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using PolymerShopDotnet.Service.Models;
 using Swashbuckle.SwaggerGen.Annotations;
@@ -14,6 +15,11 @@ namespace PolymerShopDotnet.Service.Controllers
     [Produces("application/json")]
     public class CategoriesController : Controller
     {
+        public IHostingEnvironment Hosting { get; }
+        public CategoriesController(IHostingEnvironment env)
+        {
+            Hosting = env;
+        }
         // GET api/values
         /// <summary>
         /// Returns list of categories
