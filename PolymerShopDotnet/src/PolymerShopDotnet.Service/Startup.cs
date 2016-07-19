@@ -1,12 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
+using Swashbuckle.Swagger.Model;
 
 namespace PolymerShopDotnet.Service
 {
@@ -30,6 +28,16 @@ namespace PolymerShopDotnet.Service
             // Add framework services.
             services.AddMvc();
             services.AddSwaggerGen();
+            services.ConfigureSwaggerGen(options =>
+            {
+                options.DescribeAllEnumsAsStrings();
+                options.SingleApiVersion(new Info {
+                    Title = "Polymer Shop API",
+                    Version = "v1",
+                    Description = "The service implementation for a shop",
+                    TermsOfService = "Unlicense"
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,9 +45,16 @@ namespace PolymerShopDotnet.Service
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-
             app.UseMvc();
-            app.UseSwagger();
+            // if(env.IsDevelopment() == true)
+            // {
+            //     app.UseSwagger();
+            //     app.UseSwaggerUi();
+            // }
+            app.UseSwagger((httpRequest, swaggerDocs) =>
+            {
+                swaggerDocs.Host = httpRequest.Host.Value;
+            });
             app.UseSwaggerUi();
         }
     }
