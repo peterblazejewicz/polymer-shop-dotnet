@@ -26,7 +26,12 @@ namespace PolymerShopDotnet.Service
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services
+                .AddMvc()
+                .AddJsonOptions(options =>
+                {
+                    options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+                });
             services.AddSwaggerGen();
             services.ConfigureSwaggerGen(options =>
             {
