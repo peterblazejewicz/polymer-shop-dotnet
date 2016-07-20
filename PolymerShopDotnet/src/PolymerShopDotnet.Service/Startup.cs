@@ -37,7 +37,8 @@ namespace PolymerShopDotnet.Service
             services.ConfigureSwaggerGen(options =>
             {
                 options.DescribeAllEnumsAsStrings();
-                options.SingleApiVersion(new Info {
+                options.SingleApiVersion(new Info
+                {
                     Title = "Polymer Shop API",
                     Version = "v1",
                     Description = "The service implementation for a shop",
@@ -51,7 +52,8 @@ namespace PolymerShopDotnet.Service
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
-            app.UseCors(builder => {
+            app.UseCors(builder =>
+            {
                 builder.AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowAnyOrigin()

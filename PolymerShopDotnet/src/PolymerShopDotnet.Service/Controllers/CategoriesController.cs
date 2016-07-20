@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -33,7 +31,8 @@ namespace PolymerShopDotnet.Service.Controllers
         public IActionResult Get()
         {
             IEnumerable<Category> categories = GetCategories();
-            if(categories != null) {
+            if (categories != null)
+            {
                 return Ok(categories);
             }
             return NotFound();
@@ -51,22 +50,23 @@ namespace PolymerShopDotnet.Service.Controllers
         public IActionResult Get(string name)
         {
             IEnumerable<Category> categories = GetCategories();
-            if(categories != null) 
+            if (categories != null)
             {
                 IEnumerable<Category> matched = from c in categories
-                    where c.Name.ToLower() == name.ToLower()
-                    select c;
+                                                where c.Name.ToLower() == name.ToLower()
+                                                select c;
                 Category category = matched.FirstOrDefault();
-                if(category != null) return Ok(category);
+                if (category != null) return Ok(category);
             }
             return NotFound();
         }
-    
+
         private IEnumerable<Category> GetCategories()
         {
             string path = Path.Combine(Hosting.ContentRootPath, "Data", "categories.json");
-            if(System.IO.File.Exists(path) == true) {
-                using(StreamReader reader = System.IO.File.OpenText(path))
+            if (System.IO.File.Exists(path) == true)
+            {
+                using (StreamReader reader = System.IO.File.OpenText(path))
                 {
                     JsonSerializer serializer = new JsonSerializer();
                     IEnumerable<Category> categories = (IEnumerable<Category>)serializer.Deserialize(reader, typeof(IEnumerable<Category>));
