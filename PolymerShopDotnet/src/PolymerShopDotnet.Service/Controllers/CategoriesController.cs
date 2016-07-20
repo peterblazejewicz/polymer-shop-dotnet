@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using PolymerShopDotnet.Service.Models;
 using Swashbuckle.SwaggerGen.Annotations;
 
@@ -30,8 +32,11 @@ namespace PolymerShopDotnet.Service.Controllers
         [SwaggerResponse(System.Net.HttpStatusCode.OK, Type = typeof(int))]
         public IActionResult Get()
         {
-            List<Category> categories = new List<Category>();
-            return Ok(categories);
+            IEnumerable<Category> categories = GetCategories();
+            if(categories != null) {
+                return Ok(categories);
+            }
+            return NotFound();
         }
 
         // GET api/categories/mens_outerwear
@@ -53,6 +58,20 @@ namespace PolymerShopDotnet.Service.Controllers
                 Placeholder = "data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAAAAAAAAAAAAAP/sABFEdWNreQABAAQAAAAeAAD/7gAOQWRvYmUAZMAAAAAB/9sAhAAQCwsLDAsQDAwQFw8NDxcbFBAQFBsfFxcXFxcfHhcaGhoaFx4eIyUnJSMeLy8zMy8vQEBAQEBAQEBAQEBAQEBAAREPDxETERUSEhUUERQRFBoUFhYUGiYaGhwaGiYwIx4eHh4jMCsuJycnLis1NTAwNTVAQD9AQEBAQEBAQEBAQED/wAARCAADAA4DASIAAhEBAxEB/8QAXAABAQEAAAAAAAAAAAAAAAAAAAIEAQEAAAAAAAAAAAAAAAAAAAACEAAAAwYHAQAAAAAAAAAAAAAAERMBAhIyYhQhkaEDIwUVNREBAAAAAAAAAAAAAAAAAAAAAP/aAAwDAQACEQMRAD8A3dkr5e8tfpwuneJITOzIcmQpit037Bw4mnCVNOpAAQv/2Q=="
             };
             return Ok(category);
+        }
+
+        private IEnumerable<Category> GetCategories()
+        {
+            string path = Path.Combine(Hosting.ContentRootPath, "Data", "categories.json");
+            if(System.IO.File.Exists(path) == true) {
+                using(StreamReader reader = System.IO.File.OpenText(path))
+                {
+                    JsonSerializer serializer = new JsonSerializer();
+                    IEnumerable<Category> categories = (IEnumerable<Category>)serializer.Deserialize(reader, typeof(IEnumerable<Category>));
+                    return categories;
+                }
+            }
+            return null;
         }
 
     }
