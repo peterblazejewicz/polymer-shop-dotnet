@@ -1,0 +1,7 @@
+{
+  "name": "ClientApplication",
+  "short_name": "ClientApplication",
+  "description": "A Sample Application",
+  "start_url": "/",
+  "display": "standalone"
+}
