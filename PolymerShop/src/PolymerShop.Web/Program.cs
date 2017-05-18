@@ -19,6 +19,8 @@ namespace PolymerShop.Web
 
         public static IWebHost BuildWebHost(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
+                .UseContentRoot(Directory.GetCurrentDirectory())
+                .UseWebRoot("shop")
                 .UseStartup<Startup>()
                 .Build();
     }
